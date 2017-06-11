@@ -1,0 +1,13 @@
+#Compiled files
+*.o
+*.obj
+
+# Compiled libraries
+*.lib
+*.dll
+
+# Binary
+*.exe
+*.bin
+*.iso
+*.out
