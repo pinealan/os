@@ -9,6 +9,7 @@
 
 .section .text
 .extern kernelMain
+.extern callConstructors
 .global loader
 
 loader:
@@ -24,5 +25,5 @@ _stop:
 	jmp _stop
 
 .section .bss
-.space 2*1024*1024
+.space 2*1024
 kernel_stack:
