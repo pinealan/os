@@ -2,11 +2,53 @@
 #include "gdt.hpp"
 #include "port.hpp"
 
-void printf(char* str) {
-	static uint16_t* VideoMemory = (uint16_t*)0xb8000;
+void putc(char c) {
+	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
 
+	static uint8_t x = 0;
+	static uint8_t y = 0;
+
+	switch (c) {
+	case '\n':
+		x = 0;
+		y++;
+		break;
+	case '\r':
+		x = 0;
+		break;
+	case '\t':
+		x += 4;
+		break;
+	default:
+		VideoMemory[80 * y + x] = (VideoMemory[80 * y + x] & 0xFF00) | c;
+		x++;
+	}
+
+	if (x >= 80) {
+		x = 0;
+		y++;
+	}
+
+	if (y >= 25) {
+
+		// Scroll screen by one line
+		for (x = 0; x < 80; x++) {
+			for (y = 0; y < 24; y++) {
+				VideoMemory[80 * y + x] = VideoMemory[80 * (y + 1) + x];
+			}
+		}
+
+		// Clear bottom line
+		for (x = 0; x < 80; x++)
+			VideoMemory[80 * 24 + x] = (VideoMemory[80 * 24 + x] & 0xFF00) | ' ';
+		x = 0;
+		y = 24;
+	}
+}
+
+void printf(char* str) {
 	for (int i = 0; str[i] != '\0'; ++i)
-		VideoMemory[i] = (VideoMemory[i] & 0xFF00) | str[i];
+		putc(str[i]);
 }
 
 typedef void (*constructor)();
@@ -18,7 +60,13 @@ extern "C" void callConstructors() {
 }
 
 extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
-	printf("Hello world!");
+	printf("Hello world!\n");
+	printf("Lorem ipsum\n");
+
+	for (int i = 0; i < 25; i++)
+		printf("My first operating system!!\n");
+
+	printf("Last time I will say, YAY\n");
 
 	while(1);
 }
