@@ -1,6 +1,7 @@
 #include "types.h"
 #include "gdt.hpp"
 #include "port.hpp"
+#include "interrupts.hpp"
 
 void putc(char c) {
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
@@ -67,6 +68,11 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 		printf("My first operating system!!\n");
 
 	printf("Last time I will say, YAY\n");
+
+	GlobalDescriptorTable gdt;
+	InterruptManager interrupts(0x20, &gdt);
+
+	interrupts.Activate();
 
 	while(1);
 }
