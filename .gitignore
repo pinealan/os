@@ -1,4 +1,9 @@
-#Compiled files
+# Editor configs
+*.vimrc
+*.editconfig
+.vscode/
+
+# Compiled files
 *.o
 *.obj
 
