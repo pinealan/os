@@ -5,8 +5,26 @@
 #include "gdt.hpp"
 #include "port.hpp"
 
-class InterruptManager {
+class InterruptManager;
+
+class InterruptHandler {
   protected:
+    uint8_t InterruptNumber;
+    InterruptManager* interruptManager;
+    InterruptHandler(InterruptManager* interruptManager, uint8_t InterruptNumber);
+    ~InterruptHandler();
+
+  public:
+    virtual uint32_t HandleInterrupt(uint32_t esp);
+};
+
+class InterruptManager {
+    friend class InterruptHandler;
+
+  protected:
+    static InterruptManager* ActiveInterruptManager;
+    InterruptHandler* handlers[256];
+
     struct GateDescriptor {
         uint16_t handlerAddressLowBits;
         uint16_t gdt_codeSegmentSelector;
@@ -70,6 +88,7 @@ class InterruptManager {
     static void HandleException0x13();
 
     static uint32_t HandleInterrupt(uint8_t interrupt, uint32_t esp);
+    uint32_t DoHandleInterrupt(uint8_t interrupt, uint32_t esp);
 
     Port8BitSlow programmableInterruptControllerMasterCommandPort;
     Port8BitSlow programmableInterruptControllerMasterDataPort;

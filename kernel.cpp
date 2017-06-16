@@ -2,6 +2,7 @@
 #include "gdt.hpp"
 #include "port.hpp"
 #include "interrupts.hpp"
+#include "keyboard.hpp"
 
 void putc(char c) {
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
@@ -71,6 +72,7 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(0x20, &gdt);
+	KeyboardDriver keyboard(&interrupts);
 
 	interrupts.Activate();
 

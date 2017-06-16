@@ -87,7 +87,6 @@ int_bottom:
 
 .global _ZN16InterruptManager15InterruptIgnoreEv
 _ZN16InterruptManager15InterruptIgnoreEv:
-
     iret
 
 .data

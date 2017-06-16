@@ -2,7 +2,7 @@ GPPPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o gdt.o port.o interrupts.o interruptstubs.o kernel.o
+objects = loader.o gdt.o port.o interrupts.o interruptstubs.o keyboard.o kernel.o
 
 clean:
 	rm *.o
@@ -17,6 +17,9 @@ clean.o:
 
 %.o: %.s
 	as $(ASPARAMS) -o $@ $<
+
+%.s: %.cpp
+	 g++ $(GPPPARAMS) -o $@ -S $<
 
 mykernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
