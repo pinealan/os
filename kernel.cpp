@@ -64,11 +64,7 @@ extern "C" void callConstructors() {
 extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 	printf("Hello world!\n");
 	printf("Lorem ipsum\n");
-
-	for (int i = 0; i < 25; i++)
-		printf("My first operating system!!\n");
-
-	printf("Last time I will say, YAY\n");
+	printf("My first operating system!!\n");
 
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(0x20, &gdt);
