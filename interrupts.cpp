@@ -3,7 +3,7 @@
 void printf(char* str);
 
 InterruptHandler::InterruptHandler(InterruptManager* interruptManager,
-                                   uint8_t InterruptNumer) {
+                                   uint8_t InterruptNumber) {
     this->InterruptNumber = InterruptNumber;
     this->interruptManager = interruptManager;
     interruptManager->handlers[InterruptNumber] = this;
@@ -156,14 +156,10 @@ InterruptManager::~InterruptManager()
     Deactivate();
 }
 
-void InterruptManager::SetInterruptDescriptorTableEntry(
-    uint8_t interrupt,
-    uint16_t CodeSegment,
-    void (*handler)(),
-    uint8_t DescriptorPrivilegeLevel,
-    uint8_t DescriptorType)
+void InterruptManager::SetInterruptDescriptorTableEntry(uint8_t interrupt,
+    uint16_t CodeSegment, void (*handler)(), uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType)
 {
-    // Address of pointer to code segment (relative to global descriptor table)
+    // address of pointer to code segment (relative to global descriptor table)
     // and address of the handler (relative to segment)
     interruptDescriptorTable[interrupt].handlerAddressLowBits = ((uint32_t) handler) & 0xFFFF;
     interruptDescriptorTable[interrupt].handlerAddressHighBits = (((uint32_t) handler) >> 16) & 0xFFFF;
@@ -181,7 +177,7 @@ uint16_t InterruptManager::HardwareInterruptOffset()
 
 void InterruptManager::Activate()
 {
-    if(ActiveInterruptManager != 0)
+    if (ActiveInterruptManager != 0)
         ActiveInterruptManager->Deactivate();
 
     ActiveInterruptManager = this;
@@ -190,7 +186,7 @@ void InterruptManager::Activate()
 
 void InterruptManager::Deactivate()
 {
-    if(ActiveInterruptManager == this) {
+    if (ActiveInterruptManager == this) {
         ActiveInterruptManager = 0;
         asm("cli");
     }
@@ -217,7 +213,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interrupt, uint32_t esp)
 
     if (hardwareInterruptOffset <= interrupt && interrupt < hardwareInterruptOffset + 16) {
         programmableInterruptControllerMasterCommandPort.Write(0x20);
-        if (hardwareInterruptOffset + 8 < interrupt)
+        if (hardwareInterruptOffset + 8 <= interrupt)
             programmableInterruptControllerSlaveCommandPort.Write(0x20);
     }
 
