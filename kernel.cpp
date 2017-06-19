@@ -3,6 +3,7 @@
 #include "port.hpp"
 #include "interrupts.hpp"
 #include "keyboard.hpp"
+#include "mouse.hpp"
 
 void putc(char c) {
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
