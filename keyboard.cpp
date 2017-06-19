@@ -29,6 +29,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 
     if (key < 0x80) {
         switch (key) {
+        case 0x29: printf("`"); break;
         case 0x02: printf("1"); break;
         case 0x03: printf("2"); break;
         case 0x04: printf("3"); break;
@@ -39,6 +40,8 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x09: printf("8"); break;
         case 0x0A: printf("9"); break;
         case 0x0B: printf("0"); break;
+        case 0x0C: printf("-"); break;
+        case 0x0D: printf("="); break;
 
         case 0x10: printf("q"); break;
         case 0x11: printf("w"); break;
@@ -49,7 +52,9 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x16: printf("u"); break;
         case 0x17: printf("i"); break;
         case 0x18: printf("o"); break;
-        case 0x19: printf("p"); break
+        case 0x19: printf("p"); break;
+        case 0x1A: printf("["); break;
+        case 0x1B: printf("]"); break;
 
         case 0x1E: printf("a"); break;
         case 0x1F: printf("s"); break;
@@ -61,7 +66,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x25: printf("k"); break;
         case 0x26: printf("l"); break;
 
-        case 0x2C: printf("y"); break;
+        case 0x2C: printf("z"); break;
         case 0x2D: printf("x"); break;
         case 0x2E: printf("c"); break;
         case 0x2F: printf("v"); break;
@@ -72,6 +77,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x34: printf("."); break;
         case 0x35: printf("-"); break;
 
+        case 0x0F: printf("\t"); break;
         case 0x1C: printf("\n"); break;
         case 0x39: printf(" "); break;;
 
