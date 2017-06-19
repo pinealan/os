@@ -1,4 +1,4 @@
-#include "interrupts.hpp"
+#include "interrupts.h"
 
 void printf(char* str);
 

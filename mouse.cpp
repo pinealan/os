@@ -1,4 +1,4 @@
-#include "mouse.hpp"
+#include "mouse.h"
 
 MouseDriver::MouseDriver(InterruptManager* manager)
     : InterruptHandler(manager, 0x2C),

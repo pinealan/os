@@ -2,8 +2,8 @@
 #define __MOUSE_H
 
 #include "types.h"
-#include "port.hpp"
-#include "interrupts.hpp"
+#include "port.h"
+#include "interrupts.h"
 
 class MouseDriver: public InterruptHandler {
     Port8Bit dataport;

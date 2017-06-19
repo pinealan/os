@@ -1,9 +1,9 @@
 #include "types.h"
-#include "gdt.hpp"
-#include "port.hpp"
-#include "interrupts.hpp"
-#include "keyboard.hpp"
-#include "mouse.hpp"
+#include "gdt.h"
+#include "port.h"
+#include "interrupts.h"
+#include "keyboard.h"
+#include "mouse.h"
 
 void putc(char c) {
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;

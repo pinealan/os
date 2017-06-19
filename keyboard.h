@@ -2,8 +2,8 @@
 #define __KEYBOARD_H
 
 #include "types.h"
-#include "interrupts.hpp"
-#include "port.hpp"
+#include "interrupts.h"
+#include "port.h"
 
 class KeyboardDriver : public InterruptHandler {
 

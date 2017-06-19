@@ -42,6 +42,7 @@ class Port8BitSlow : public Port8Bit
     ~Port8BitSlow();
 
     virtual void Write(uint8_t data);
+
   protected:
     static inline void Write8Slow(uint16_t _port, uint8_t _data)
     {

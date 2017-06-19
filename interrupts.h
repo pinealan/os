@@ -2,8 +2,8 @@
 #define __INTERRUPTS_H
 
 #include "types.h"
-#include "gdt.hpp"
-#include "port.hpp"
+#include "gdt.h"
+#include "port.h"
 
 class InterruptManager;
 

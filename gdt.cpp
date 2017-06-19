@@ -1,4 +1,4 @@
-#include "gdt.hpp"
+#include "gdt.h"
 
 GlobalDescriptorTable::GlobalDescriptorTable()
     : nullSegmentSelector(0, 0, 0),
