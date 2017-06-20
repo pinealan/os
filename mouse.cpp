@@ -4,7 +4,12 @@ MouseDriver::MouseDriver(InterruptManager* manager)
     : InterruptHandler(manager, 0x2C),
     dataport(0x60),
     commandport(0x64)
-{
+{ }
+
+MouseDriver::~MouseDriver()
+{ }
+
+void MouseDriver::Activate() {
     uint16_t* VideoMemory = (uint16_t*) 0xb8000;
     offset = 0;
     buttons = 0;
@@ -22,9 +27,6 @@ MouseDriver::MouseDriver(InterruptManager* manager)
     dataport.Write(0xF4);
     dataport.Read();
 }
-
-MouseDriver::~MouseDriver()
-{ }
 
 uint32_t MouseDriver::HandleInterrupt(uint32_t esp)
 {

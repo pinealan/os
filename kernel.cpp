@@ -64,14 +64,24 @@ extern "C" void callConstructors() {
 
 extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 	printf("Hello world!\n");
-	printf("Lorem ipsum\n");
-	printf("My first operating system!!\n");
-
+	printf("Welcome to my first operating system!!\n");
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(0x20, &gdt);
-	KeyboardDriver keyboard(&interrupts);
-	MouseDriver mouse(&interrupts);
 
+	printf("Initializing Hardware... drivers\n");
+
+	DriverManager driverManager;
+
+	KeyboardDriver keyboard(&interrupts);
+	driverManager.AddDriver(&keyboard);
+
+	MouseDriver mouse(&interrupts);
+	driverManager.AddDriver(&mouse);
+
+	printf("Initializing Hardware... driver manager\n");
+	driverManager.ActivateAll();
+
+	printf("Initializing Hardware... interrutps");
 	interrupts.Activate();
 
 	while(1);

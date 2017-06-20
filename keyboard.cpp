@@ -1,10 +1,17 @@
 #include "keyboard.h"
 
+void printf(char*);
+
 KeyboardDriver::KeyboardDriver(InterruptManager* manager)
     : InterruptHandler(manager, 0x21),
       dataport(0x60),
       commandport(0x64)
-{
+{ }
+
+KeyboardDriver::~KeyboardDriver()
+{ }
+
+void KeyboardDriver::Activate() {
     while (commandport.Read() & 0x1)
         dataport.Read();
 
@@ -13,15 +20,10 @@ KeyboardDriver::KeyboardDriver(InterruptManager* manager)
 
     uint8_t status = (dataport.Read() | 1) & ~0x10;
     commandport.Write(0x60); // command 60 = set controller command byte
-
     dataport.Write(status);
+
     dataport.Write(0xf4);
 }
-
-KeyboardDriver::~KeyboardDriver()
-{ }
-
-void printf(char*);
 
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 {
@@ -77,11 +79,11 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x34: printf("."); break;
         case 0x35: printf("-"); break;
 
+        case 0x39: printf(" "); break;
         case 0x0F: printf("\t"); break;
         case 0x1C: printf("\n"); break;
-        case 0x39: printf(" "); break;;
 
-        default: {
+        default:
             char* foo = "Keyboard 0x00";
             char* hex = "0123456789ABCDEF";
             foo[11] = hex[(key >> 4) & 0xF];
@@ -89,7 +91,9 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             printf(foo);
             break;
         }
-        }
+    } else {
+        printf((char*) &key);
+        printf(" ");
     }
     return esp;
 }
