@@ -1,10 +1,10 @@
 #ifndef __MOUSE_H
 #define __MOUSE_H
 
-#include "types.h"
-#include "interrupts.h"
-#include "driver.h"
-#include "port.h"
+#include "common/types.h"
+#include "hardware/interrupts.h"
+#include "hardware/port.h"
+#include "drivers/driver.h"
 
 class MouseDriver: public InterruptHandler, public Driver {
     Port8Bit dataport;
