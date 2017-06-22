@@ -44,8 +44,8 @@ bool PCIController::DeviceHasFunctions(uint16_t bus, uint16_t device)
     return Read(bus, device, 0, 0x0E) & (1 << 7);
 }
 
-void printf(char* str);
-void putc(char c);
+void printk(char*);
+void printh(uint8_t);
 
 void PCIController::SelectDrivers(DriverManager* driverManager)
 {
@@ -57,24 +57,23 @@ void PCIController::SelectDrivers(DriverManager* driverManager)
                 if (dev.vendor_id == 0x0000 || dev.vendor_id == 0xFFFF)
                     break;
 
-                printf("PCI BUS ");
-                putc(bus & 0xFF);
+                printk("PCI BUS ");
+                printh(bus & 0xFF);
 
-                printf(", DEVICE");
-                putc(device & 0xFF);
+                printk(", DEVICE ");
+                printh(device & 0xFF);
 
-                printf(", FUNCTION");
-                putc(function & 0xFF);
+                printk(", FUNCTION ");
+                printh(function & 0xFF);
 
-                printf(" = VENDOR");
-                putc((dev.vendor_id & 0xFF00) >> 8);
-                putc(dev.vendor_id & 0xFF);
+                printk(" = VENDOR ");
+                printh((dev.vendor_id & 0xFF00) >> 8);
+                printh(dev.vendor_id & 0xFF);
 
-                printf(", DEVICE ");
-                putc((dev.device_id & 0xFF00) >> 8);
-                putc((dev.device_id & 0xFF00) >> 8);
-                putc(dev.device_id & 0xFF);
-                printf("\n");
+                printk(", DEVICE ");
+                printh((dev.device_id & 0xFF00) >> 8);
+                printh(dev.device_id & 0xFF);
+                printk("\n");
             }
         }
     }

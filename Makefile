@@ -13,7 +13,8 @@ objects = obj/loader.o \
           obj/drivers/mouse.o \
           obj/kernel.o
 
-clean: clean.o clean.bin
+all: mykernel.iso
+
 clean.o:
 	rm -rf obj
 
@@ -26,7 +27,7 @@ obj/%.o: %.cpp
 
 obj/%.o: %.s
 	mkdir -p $(@D)
-	as $(ASPARAMS) -o $@ -<
+	as $(ASPARAMS) -o $@ $<
 
 %.s: %.cpp
 	g++ $(GPPPARAMS) -o $@ -S $<

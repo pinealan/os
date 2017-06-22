@@ -1,6 +1,7 @@
 #include <drivers/keyboard.h>
 
-void printf(char*);
+void printk(char*);
+void printh(uint8_t);
 
 KeyboardDriver::KeyboardDriver(InterruptManager* manager)
     : InterruptHandler(manager, 0x21),
@@ -31,68 +32,74 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 
     if (key < 0x80) {
         switch (key) {
-        case 0x29: printf("`"); break;
-        case 0x02: printf("1"); break;
-        case 0x03: printf("2"); break;
-        case 0x04: printf("3"); break;
-        case 0x05: printf("4"); break;
-        case 0x06: printf("5"); break;
-        case 0x07: printf("6"); break;
-        case 0x08: printf("7"); break;
-        case 0x09: printf("8"); break;
-        case 0x0A: printf("9"); break;
-        case 0x0B: printf("0"); break;
-        case 0x0C: printf("-"); break;
-        case 0x0D: printf("="); break;
+        case 0x29: printk("`"); break;
+        case 0x02: printk("1"); break;
+        case 0x03: printk("2"); break;
+        case 0x04: printk("3"); break;
+        case 0x05: printk("4"); break;
+        case 0x06: printk("5"); break;
+        case 0x07: printk("6"); break;
+        case 0x08: printk("7"); break;
+        case 0x09: printk("8"); break;
+        case 0x0A: printk("9"); break;
+        case 0x0B: printk("0"); break;
+        case 0x0C: printk("-"); break;
+        case 0x0D: printk("="); break;
 
-        case 0x10: printf("q"); break;
-        case 0x11: printf("w"); break;
-        case 0x12: printf("e"); break;
-        case 0x13: printf("r"); break;
-        case 0x14: printf("t"); break;
-        case 0x15: printf("z"); break;
-        case 0x16: printf("u"); break;
-        case 0x17: printf("i"); break;
-        case 0x18: printf("o"); break;
-        case 0x19: printf("p"); break;
-        case 0x1A: printf("["); break;
-        case 0x1B: printf("]"); break;
+        case 0x10: printk("q"); break;
+        case 0x11: printk("w"); break;
+        case 0x12: printk("e"); break;
+        case 0x13: printk("r"); break;
+        case 0x14: printk("t"); break;
+        case 0x15: printk("z"); break;
+        case 0x16: printk("u"); break;
+        case 0x17: printk("i"); break;
+        case 0x18: printk("o"); break;
+        case 0x19: printk("p"); break;
+        case 0x1A: printk("["); break;
+        case 0x1B: printk("]"); break;
 
-        case 0x1E: printf("a"); break;
-        case 0x1F: printf("s"); break;
-        case 0x20: printf("d"); break;
-        case 0x21: printf("f"); break;
-        case 0x22: printf("g"); break;
-        case 0x23: printf("h"); break;
-        case 0x24: printf("j"); break;
-        case 0x25: printf("k"); break;
-        case 0x26: printf("l"); break;
+        case 0x1E: printk("a"); break;
+        case 0x1F: printk("s"); break;
+        case 0x20: printk("d"); break;
+        case 0x21: printk("f"); break;
+        case 0x22: printk("g"); break;
+        case 0x23: printk("h"); break;
+        case 0x24: printk("j"); break;
+        case 0x25: printk("k"); break;
+        case 0x26: printk("l"); break;
+        case 0x27: printk(";"); break;
+        case 0x28: printk("'"); break;
 
-        case 0x2C: printf("z"); break;
-        case 0x2D: printf("x"); break;
-        case 0x2E: printf("c"); break;
-        case 0x2F: printf("v"); break;
-        case 0x30: printf("b"); break;
-        case 0x31: printf("n"); break;
-        case 0x32: printf("m"); break;
-        case 0x33: printf(","); break;
-        case 0x34: printf("."); break;
-        case 0x35: printf("-"); break;
+        case 0x2C: printk("z"); break;
+        case 0x2D: printk("x"); break;
+        case 0x2E: printk("c"); break;
+        case 0x2F: printk("v"); break;
+        case 0x30: printk("b"); break;
+        case 0x31: printk("n"); break;
+        case 0x32: printk("m"); break;
+        case 0x33: printk(","); break;
+        case 0x34: printk("."); break;
+        case 0x35: printk("/"); break;
 
-        case 0x39: printf(" "); break;
-        case 0x0F: printf("\t"); break;
-        case 0x1C: printf("\n"); break;
+        case 0x39: printk(" "); break;
+        case 0x0E: break; // Backsapce
+        case 0x2B: printk("\\"); break;
+        case 0x48: break; // Up arrow
+        case 0x4B: break; // Left arrow
+        case 0x50: break; // Down arrow
+        case 0x4D: break; // Right arrow
+        case 0x0F: printk("\t"); break;
+        case 0x1C: printk("\n"); break;
 
         default:
-            char* foo = "Keyboard 0x00";
-            char* hex = "0123456789ABCDEF";
-            foo[11] = hex[(key >> 4) & 0xF];
-            foo[12] = hex[key & 0xF];
-            printf(foo);
+            printk("Keyboard 0x");
+            printh(key);
+            printk("\n")
             break;
         }
     } else {
-        putc(key);
+        //printh(key);
     }
     return esp;
 }

@@ -1,6 +1,7 @@
 #include <hardware/interrupts.h>
 
-void printf(char* str);
+void printk(char* str);
+void printh(uint8_t byte);
 
 InterruptHandler::InterruptHandler(InterruptManager* interruptManager,
                                    uint8_t InterruptNumber) {
@@ -204,11 +205,8 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interrupt, uint32_t esp)
     if (handlers[interrupt] != 0) {
         esp = handlers[interrupt]->HandleInterrupt(esp);
     } else if (interrupt != hardwareInterruptOffset) {
-        char* foo = "Unhandled Interrupt! 0x00";
-        char* hex = "0123456789ABCDF";
-        foo[23] = hex[(interrupt >> 4) & 0xF];
-        foo[24] = hex[interrupt & 0xF];
-        printf(foo);
+        printk("Unhandled Interrupt! 0x");
+        printh(interrupt);
     }
 
     if (hardwareInterruptOffset <= interrupt && interrupt < hardwareInterruptOffset + 16) {

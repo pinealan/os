@@ -7,7 +7,8 @@
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
 
-void putc(char c) {
+void putc(char c)
+{
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
 
 	static uint8_t x = 0;
@@ -51,7 +52,15 @@ void putc(char c) {
 	}
 }
 
-void printf(char* str) {
+void printh(uint8_t byte)
+{
+	char* hex = "0123456789ABCDEF";
+	putc(hex[(byte >> 4) & 0xF]);
+	putc(hex[byte & 0xF]);
+}
+
+void printk(char* str)
+{
 	for (int i = 0; str[i] != '\0'; ++i)
 		putc(str[i]);
 }
@@ -59,18 +68,20 @@ void printf(char* str) {
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
 extern "C" constructor end_ctors;
-extern "C" void callConstructors() {
+extern "C" void callConstructors()
+{
 	for(constructor* i = &start_ctors; i != &end_ctors; i++)
 		(*i)();
 }
 
-extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
-	printf("Hello world!\n");
-	printf("Welcome to my first operating system!!\n");
+extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber)
+{
+	printk("Hello world!\n");
+	printk("Welcome to my first operating system!!\n");
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(0x20, &gdt);
 
-	printf("Initializing Hardware... drivers\n");
+	printk("Initializing Hardware... drivers\n");
 
 	DriverManager driverManager;
 
@@ -83,10 +94,10 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 	PCIController pciController;
 	pciController.SelectDrivers(&driverManager);
 
-	printf("Initializing Hardware... driver manager\n");
+	printk("Initializing Hardware... driver manager\n");
 	driverManager.ActivateAll();
 
-	printf("Initializing Hardware... interrutps");
+	printk("Initializing Hardware... interrutps");
 	interrupts.Activate();
 
 	while(1);
