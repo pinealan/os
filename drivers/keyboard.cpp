@@ -1,4 +1,4 @@
-#include "drivers/keyboard.h"
+#include <drivers/keyboard.h>
 
 void printf(char*);
 
@@ -92,8 +92,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             break;
         }
     } else {
-        printf((char*) &key);
-        printf(" ");
+        putc(key);
     }
     return esp;
 }

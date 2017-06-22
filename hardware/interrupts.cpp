@@ -1,4 +1,4 @@
-#include "hardware/interrupts.h"
+#include <hardware/interrupts.h>
 
 void printf(char* str);
 
