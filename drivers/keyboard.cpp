@@ -95,7 +95,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         default:
             printk("Keyboard 0x");
             printh(key);
-            printk("\n")
+            printk("\n");
             break;
         }
     } else {
