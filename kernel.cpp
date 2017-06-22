@@ -1,10 +1,11 @@
-#include "gdt.h"
-#include "common/types.h"
-#include "hardware/port.h"
-#include "hardware/interrupts.h"
-#include "drivers/driver.h"
-#include "drivers/keyboard.h"
-#include "drivers/mouse.h"
+#include <gdt.h>
+#include <common/types.h>
+#include <hardware/interrupts.h>
+#include <hardware/port.h>
+#include <hardware/pci.h>
+#include <drivers/driver.h>
+#include <drivers/keyboard.h>
+#include <drivers/mouse.h>
 
 void putc(char c) {
 	static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
@@ -78,6 +79,9 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber) {
 
 	MouseDriver mouse(&interrupts);
 	driverManager.AddDriver(&mouse);
+
+	PCIController pciController;
+	pciController.SelectDrivers(&driverManager);
 
 	printf("Initializing Hardware... driver manager\n");
 	driverManager.ActivateAll();
