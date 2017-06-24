@@ -1,8 +1,10 @@
 #include <gdt.h>
 #include <common/types.h>
+
 #include <hardware/interrupts.h>
 #include <hardware/port.h>
 #include <hardware/pci.h>
+
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
@@ -76,13 +78,11 @@ extern "C" void callConstructors()
 
 extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber)
 {
-	printk("Hello world!\n");
-	printk("Welcome to my first operating system!!\n");
+	printk("Hello world\n");
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(0x20, &gdt);
 
-	printk("Initializing Hardware... drivers\n");
-
+	printk("Initializing drivers...\n");
 	DriverManager driverManager;
 
 	KeyboardDriver keyboard(&interrupts);
@@ -92,13 +92,14 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber)
 	driverManager.AddDriver(&mouse);
 
 	PCIController pciController;
-	pciController.SelectDrivers(&driverManager);
+	pciController.SelectDrivers(&driverManager, &interrupts);
 
-	printk("Initializing Hardware... driver manager\n");
+	printk("Initializing driver manager...\n");
 	driverManager.ActivateAll();
 
-	printk("Initializing Hardware... interrutps");
+	printk("Initializing interrutps...\n");
 	interrupts.Activate();
 
+	printk("\nWelcome to Sleepy Operating System!\n");
 	while(1);
 }

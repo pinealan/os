@@ -6,6 +6,19 @@
 #include <hardware/port.h>
 #include <hardware/interrupts.h>
 
+enum BaseAddressRegisterType {
+    MemoryMapping = 0,
+    InputOutput = 1
+};
+
+class BaseAddressRegister {
+  public:
+    bool prefetchable;
+    uint8_t* address;
+    uint32_t size;
+    BaseAddressRegisterType type;
+};
+
 class PCIDeviceDescriptor {
   public:
     uint32_t portBase;
@@ -40,8 +53,10 @@ class PCIController {
     void Write(uint16_t bus, uint16_t device, uint16_t function, uint32_t registeroffset, uint32_t value);
     bool DeviceHasFunctions(uint16_t bus, uint16_t device);
 
-    void SelectDrivers(DriverManager* driverManager);
+    void SelectDrivers(DriverManager* driverManager, InterruptManager* interrupts);
+    Driver* GetDriver(PCIDeviceDescriptor dev, InterruptManager* interrupts);
     PCIDeviceDescriptor GetDeviceDescriptor(uint16_t bus, uint16_t device, uint16_t function);
+    BaseAddressRegister GetBaseAddressRegister(uint16_t bus, uint16_t deice, uint16_t function, uint16_t bar);
 };
 
 #endif
