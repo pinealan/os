@@ -1,4 +1,5 @@
 #include <gdt.h>
+#include <multitasking.h>
 #include <common/types.h>
 
 #include <hardware/interrupts.h>
@@ -80,7 +81,9 @@ extern "C" void kernelMain(void* mutliboot_structure, uint32_t magicnumber)
 {
 	printk("Hello world\n");
 	GlobalDescriptorTable gdt;
-	InterruptManager interrupts(0x20, &gdt);
+	TaskManager taskManager;
+
+	InterruptManager interrupts(0x20, &gdt, &taskManager);
 
 	printk("Initializing drivers...\n");
 	DriverManager driverManager;

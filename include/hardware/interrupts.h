@@ -2,6 +2,7 @@
 #define __INTERRUPTS_H
 
 #include <gdt.h>
+#include <multitasking.h>
 #include <common/types.h>
 #include <hardware/port.h>
 
@@ -24,6 +25,7 @@ class InterruptManager {
   protected:
     static InterruptManager* ActiveInterruptManager;
     InterruptHandler* handlers[256];
+    TaskManager* taskManager;
 
     struct GateDescriptor {
         uint16_t handlerAddressLowBits;
@@ -97,7 +99,7 @@ class InterruptManager {
 
   public:
     InterruptManager(uint16_t hardwareInterruptOffset,
-        GlobalDescriptorTable* globalDescriptorTable);
+        GlobalDescriptorTable* globalDescriptorTable, TaskManager* taskManager);
     ~InterruptManager();
     uint16_t HardwareInterruptOffset();
     void Activate();
